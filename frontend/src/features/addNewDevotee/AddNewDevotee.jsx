@@ -9,6 +9,7 @@ const AddNewDevotee = () => {
     fullName: "",
     phone: "",
     address: "",
+    occupation: "",
     gender: "",
     date: today,
   });
@@ -53,6 +54,7 @@ const AddNewDevotee = () => {
         fullName: "",
         phone: "",
         address: "",
+        occupation: "",
         gender: "",
         date: today,
       });
@@ -101,7 +103,14 @@ const AddNewDevotee = () => {
               name="address"
               error={errors.address}
             />
-
+            <InputGroup
+              value={formData.occupation}
+              onChange={inputOnChange}
+              type="text"
+              label="Occupation"
+              name="occupation"
+              error={errors.occupation}
+            />
             <InputGroup
               value={formData.gender}
               onChange={inputOnChange}

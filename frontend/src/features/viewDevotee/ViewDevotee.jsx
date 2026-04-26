@@ -190,6 +190,7 @@ const ViewDevotee = () => {
               <th className="py-2">Name</th>
               <th className="py-2">Phone</th>
               <th className="py-2">Address</th>
+              <th className="py-2">Occupation</th>
               <th className="py-2">Gender</th>
               <th className="py-2">Date</th>
               <th className="py-2">Actions</th>
@@ -214,6 +215,8 @@ const ViewDevotee = () => {
                   <td className="py-2">{devotee.fullName}</td>
                   <td className="py-2">{devotee.phone}</td>
                   <td className="py-2">{devotee.address}</td>
+                  <td className="py-2">{devotee.occupation}</td>
+
                   <td className="py-2">{devotee.gender}</td>
                   <td className="py-2">
                     {new Date(devotee.date).toLocaleDateString()}

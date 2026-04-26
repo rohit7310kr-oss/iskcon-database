@@ -4,6 +4,7 @@ const devoteeSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   address: { type: String, required: true },
   phone: { type: Number, required: true },
+  occupation: { type: String, default: "N/A" },
   gender: { type: String, enum: ["male", "female", "other"], required: true },
   date: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
