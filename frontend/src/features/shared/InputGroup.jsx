@@ -8,6 +8,7 @@ const InputGroup = ({
   label,
   selectConfig,
   error,
+  disabled = false,
 }) => {
   {
     if (type === "text" || type === "date")
@@ -23,6 +24,7 @@ const InputGroup = ({
             type={type}
             id={name}
             className={`border p-1 ${error ? "border-red-500" : ""}`}
+            disabled={disabled}
           />
           {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
         </div>

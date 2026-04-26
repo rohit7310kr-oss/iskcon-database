@@ -27,11 +27,17 @@ const AddNewDevotee = () => {
 
   const validateForm = () => {
     const newErrors = {};
+    if (!formData.fullName) {
+      newErrors.fullName = "Please write your name";
+    }
     if (!formData.phone || !/^\d{10}$/.test(formData.phone)) {
       newErrors.phone = "Phone number must be exactly 10 digits.";
     }
     if (!formData.gender) {
       newErrors.gender = "Please select a gender.";
+    }
+    if (!formData.address) {
+      newErrors.address = "Please fill your address";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -118,6 +124,7 @@ const AddNewDevotee = () => {
               label="Date"
               name="date"
               error={errors.date}
+              disabled={true}
             />
           </div>
           <button
