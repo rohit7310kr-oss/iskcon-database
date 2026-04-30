@@ -8,13 +8,16 @@ const Register = () => {
   const { registerUser } = useUser();
 
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const initFormField = {
     fullName: "",
     email: "",
     phone: "",
     password: "",
     confirmPassword: "",
-  });
+  };
+  const [formData, setFormData] = useState(initFormField);
+
+  const [formError, setFormError] = useState(initFormField);
 
   const inputOnChange = function (e) {
     setFormData((data) => {
@@ -22,16 +25,55 @@ const Register = () => {
     });
   };
 
+  const validateForm = function () {
+    let errors = { ...initFormField };
+
+    if (formData.fullName === "") {
+      errors.fullName = "Please write your name";
+    }
+
+    if (formData.email === "") {
+      errors.email = "Please write the email";
+    }
+
+    if (formData.phone === "") {
+      errors.phone = "Please write your phone number";
+    } else if (formData.phone.length !== 10) {
+      errors.phone = "Please fill correct number (only 10 digits)";
+    }
+
+    if (formData.password === "") {
+      errors.password = "Please write password";
+    }
+
+    if (formData.confirmPassword === "") {
+      errors.confirmPassword = "Please confirm your password";
+    } else if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
+    }
+
+    setFormError(errors);
+
+    // check if all fields are empty (no errors)
+    return Object.values(errors).every((val) => val === "");
+  };
+
   const handleFormSubmit = function (e) {
     e.preventDefault();
 
-    registerUser({
-      fullName: formData.fullName,
-      phone: formData.phone,
-      email: formData.email,
-      password: formData.password,
-      confirmPassword: formData.confirmPassword,
-    });
+    if (validateForm())
+      registerUser(
+        {
+          fullName: formData.fullName,
+          phone: formData.phone,
+          email: formData.email,
+          password: formData.password,
+          confirmPassword: formData.confirmPassword,
+        },
+        () => {
+          setFormData(initFormField);
+        },
+      );
   };
 
   return (
@@ -41,30 +83,35 @@ const Register = () => {
         label="Full Name"
         value={formData.fullName}
         onChange={inputOnChange}
+        error={formError.fullName}
       />
       <InputGroup
         name="email"
         label="Email"
         value={formData.email}
         onChange={inputOnChange}
+        error={formError.email}
       />
       <InputGroup
         name="phone"
         label="Phone"
         value={formData.phone}
         onChange={inputOnChange}
+        error={formError.phone}
       />
       <InputGroup
         name="password"
         label="Password"
         value={formData.password}
         onChange={inputOnChange}
+        error={formError.password}
       />
       <InputGroup
         name="confirmPassword"
         label="Confirm password"
         value={formData.confirmPassword}
         onChange={inputOnChange}
+        error={formError.confirmPassword}
       />
 
       <button

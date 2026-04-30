@@ -1,11 +1,10 @@
-import React from "react";
-import { useMemo } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const useFilterHandler = (devotees) => {
   const [search, setSearch] = useState("");
   const [genderFilter, setGenderFilter] = useState("");
-  const [dateFilter, setDateFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState([]);
+  const [isCheckingConsistent, setIsCheckingConsistent] = useState(false);
 
   const filteredDevotees = useMemo(() => {
     let filtered = devotees;
@@ -19,17 +18,36 @@ const useFilterHandler = (devotees) => {
     if (genderFilter) {
       filtered = filtered.filter((d) => d.gender === genderFilter);
     }
-    if (dateFilter) {
-      filtered = filtered.filter((devotee) => {
-        let devoteeDate;
-        devotee.date.forEach((d) => {
-          devoteeDate = new Date(d).toISOString().split("T")[0];
-        });
+    if (dateFilter.length) {
+      const dateFilterIso = dateFilter.map((el) =>
+        new Date(el).toLocaleDateString(),
+      );
 
-        // const devoteeDate = new Date(d.date).toISOString().split("T")[0];
-        return devoteeDate === dateFilter;
-      });
+      if (isCheckingConsistent) {
+        const recordsByPhone = filtered.reduce((acc, record) => {
+          const phone = record.phone;
+          if (!acc[phone]) acc[phone] = [];
+          acc[phone].push(record);
+          return acc;
+        }, {});
+
+        filtered = Object.values(recordsByPhone)
+          .filter((records) =>
+            dateFilterIso.every((date) =>
+              records.some(
+                (record) => new Date(record.date).toLocaleDateString() === date,
+              ),
+            ),
+          )
+          .flat();
+      } else {
+        filtered = filtered.filter((devotee) => {
+          const devoteeDate = new Date(devotee.date).toLocaleDateString();
+          return dateFilterIso.includes(devoteeDate);
+        });
+      }
     }
+
     return filtered;
   }, [search, genderFilter, dateFilter, devotees]);
 
@@ -41,6 +59,8 @@ const useFilterHandler = (devotees) => {
     dateFilter,
     setGenderFilter,
     setDateFilter,
+    isCheckingConsistent,
+    setIsCheckingConsistent,
   };
 };
 

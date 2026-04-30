@@ -1,5 +1,6 @@
 const catchAsyncHandler = require("../middleware/catchAsyncHandler");
 const Devotee = require("../models/Devotee.model");
+const UserModel = require("../models/User.model");
 
 exports.getDevotees = catchAsyncHandler(async (req, res) => {
   const devotees = await Devotee.find().sort({ createdAt: -1 });
@@ -7,7 +8,7 @@ exports.getDevotees = catchAsyncHandler(async (req, res) => {
 });
 
 exports.createDevotee = catchAsyncHandler(async (req, res) => {
-  const devotee = await Devotee.create(req.body);
+  const devotee = await Devotee.create({ ...req.body, user: req.user.email });
 
   res.status(201).json(devotee);
 });

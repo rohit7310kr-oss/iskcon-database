@@ -9,14 +9,20 @@ const getToken = function (role, email) {
 };
 
 exports.login = catchAsyncHandler(async function (req, res) {
-  const user = await User.findOne({
-    $or: [{ phone: req.body.user }, { email: req.body.user }],
-  });
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.body.user);
 
+  const query = isEmail ? { email: req.body.user } : { phone: req.body.user };
+
+  const user = await User.findOne(query);
   if (!user)
-    res
+    return res
       .status(400)
       .json({ status: "fail", data: null, message: "no user found" });
+
+  if (user.password !== req.body.password)
+    return res
+      .status(400)
+      .json({ status: "fail", data: null, message: "wrong credentials" });
 
   const token = getToken(user.role, user.email);
 
@@ -41,7 +47,7 @@ exports.createUser = catchAsyncHandler(async function (req, res) {
   });
 
   if (user)
-    res
+    return res
       .status(400)
       .json({ status: "fail", message: "user already exist", data: null });
 

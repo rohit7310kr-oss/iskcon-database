@@ -6,12 +6,28 @@ import { useUser } from "../../context/userContext";
 
 const Login = () => {
   const { loginUser } = useUser();
-
-  const [formData, setFormData] = useState({
+  const initFormData = {
     user: "",
     password: "",
-  });
+  };
+
+  const [formData, setFormData] = useState(initFormData);
+
+  const [formError, setFormError] = useState(initFormData);
+
   const navigate = useNavigate();
+
+  const validateForm = () => {
+    let errors = { ...initFormData };
+    if (formData.user === "") errors.user = "Please write your email";
+
+    if (formData.password === "")
+      errors.password = "please write your password";
+
+    setFormError(errors);
+
+    return Object.values(errors).every((val) => val === "");
+  };
 
   const onInputChange = function (e) {
     setFormData((data) => {
@@ -22,7 +38,8 @@ const Login = () => {
   const handleFormSubmit = function (e) {
     e.preventDefault();
 
-    loginUser({ user: formData.user, password: formData.password });
+    if (validateForm())
+      loginUser({ user: formData.user, password: formData.password });
   };
 
   return (
@@ -32,12 +49,14 @@ const Login = () => {
         value={formData.user}
         onChange={onInputChange}
         label="Phone or email"
+        error={formError.user}
       />
       <InputGroup
         name="password"
         value={formData.password}
         onChange={onInputChange}
         label="Password"
+        error={formError.password}
       />
       <button
         type="submit"

@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { createUserAPI, loginUserAPI } from "../auth/services/userApi";
+import Toast from "../app/shared/Toast";
 
 const userContext = createContext();
 
 const UserProvider = () => {
+  const [toast, setToast] = useState(null);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -28,21 +30,25 @@ const UserProvider = () => {
     navigate("/app");
   };
 
-  const registerUser = async function (data) {
+  const registerUser = async function (data, resetForm) {
     try {
       const user = await createUserAPI(data);
-      saveUser(user.token, user.data.data);
+      if (user.data.status === "success")
+        saveUser(user.data.token, user.data.data);
     } catch (err) {
-      console.log(err);
+      setToast({ type: "error", message: err.response.data.message });
+      resetForm();
     }
   };
 
   const loginUser = async function (data) {
     try {
       const user = await loginUserAPI(data);
-      saveUser(user.data.token, user.data.data);
+      console.log(user);
+      if (user.data.status === "success")
+        saveUser(user.data.token, user.data.data);
     } catch (err) {
-      console.log(err);
+      setToast({ type: "error", message: err.response.data.message });
     }
   };
 
@@ -54,6 +60,7 @@ const UserProvider = () => {
 
   return (
     <userContext.Provider value={{ logout, user, registerUser, loginUser }}>
+      <Toast toast={toast} onClose={() => setToast(null)} />
       <Outlet />
     </userContext.Provider>
   );

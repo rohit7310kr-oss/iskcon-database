@@ -8,6 +8,8 @@ import useEditFormHandler from "../hooks/useEditFormHandler";
 import useGetAllDevoteeHandler from "../hooks/useGetAllDevoteeHandler";
 import TableRow from "./TableRow";
 import ExpandedTable from "./ExpandedTable";
+import DayPicker from "../shared/DatePicker";
+import DatePicker from "../shared/DatePicker";
 
 const ViewDevotee = () => {
   const [toast, setToast] = useState(null);
@@ -23,6 +25,8 @@ const ViewDevotee = () => {
     dateFilter,
     setGenderFilter,
     setDateFilter,
+    isCheckingConsistent,
+    setIsCheckingConsistent,
   } = useFilterHandler(devotees);
 
   const {
@@ -79,7 +83,7 @@ const ViewDevotee = () => {
       <Toast toast={toast} onClose={() => setToast(null)} />
       <div className="bg-white p-6 rounded-xl shadow">
         <div className="pb-3 flex justify-between items-center">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 ">
             <input
               className="border p-2"
               placeholder="search with name, phone"
@@ -96,13 +100,20 @@ const ViewDevotee = () => {
               <option value="female">Female</option>
               <option value="other">Other</option>
             </select>
-            <input
-              type="date"
-              className="border p-2"
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-              placeholder="Filter by date"
-            />
+            <div>
+              <label htmlFor="consistent">Check consistency </label>
+              <input
+                id="consistent"
+                type="checkbox"
+                value={isCheckingConsistent}
+                onChange={() => setIsCheckingConsistent((c) => !c)}
+              />
+              <DatePicker
+                className=""
+                dateFilter={dateFilter}
+                setDateFilter={setDateFilter}
+              />
+            </div>
           </div>
           <select
             className="border p-2"
@@ -113,6 +124,7 @@ const ViewDevotee = () => {
             <option value={true}>Expanded</option>
             <option value={false}>Phone listing</option>
           </select>
+
           <button
             onClick={handleExport}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

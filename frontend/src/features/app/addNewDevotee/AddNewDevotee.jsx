@@ -75,7 +75,7 @@ const AddNewDevotee = () => {
               label="Date"
               name="date"
               error={errors.date}
-              disabled={true}
+              // disabled={true}
             />
           </div>
           <button

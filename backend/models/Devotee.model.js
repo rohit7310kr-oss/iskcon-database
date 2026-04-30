@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const devoteeSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
+  user: { type: String },
   address: { type: String, required: true },
   phone: { type: Number, required: true },
   occupation: { type: String, default: "N/A" },

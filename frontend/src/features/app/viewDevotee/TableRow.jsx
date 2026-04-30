@@ -14,10 +14,10 @@ const TableRow = ({
   const devoteeList = list.filter((el) => el.phone === summery);
 
   return (
-    <div className="my-3 cursor-pointer bg-gray-100 hover:bg-gray-300">
+    <div className="my-3 cursor-pointer bg-gray-100">
       <div className="border-b text-gray-600 text-xl">
         <div
-          className="py-3 px-4 flex justify-between items-center"
+          className="py-3 px-4 flex justify-between items-center hover:bg-gray-300"
           onClick={() => setIsOpen((p) => !p)}
         >
           {listLoading ? (
@@ -65,7 +65,7 @@ const TableRow = ({
           </thead>
           <tbody>
             {devoteeList.map((el) => (
-              <tr>
+              <tr className=" hover:bg-gray-300">
                 <td className="py-2">{el.fullName}</td>
                 <td className="py-2">{el.address}</td>
                 <td className="py-2">{el.occupation}</td>
