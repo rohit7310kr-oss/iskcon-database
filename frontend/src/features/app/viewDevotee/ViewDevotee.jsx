@@ -69,8 +69,13 @@ const ViewDevotee = () => {
       filtered = filtered.filter((d) => d.gender === genderFilter);
     }
     if (dateFilter) {
-      filtered = filtered.filter((d) => {
-        const devoteeDate = new Date(d.date).toISOString().split("T")[0];
+      filtered = filtered.filter((devotee) => {
+        let devoteeDate;
+        devotee.date.forEach((d) => {
+          devoteeDate = new Date(d).toISOString().split("T")[0];
+        });
+
+        // const devoteeDate = new Date(d.date).toISOString().split("T")[0];
         return devoteeDate === dateFilter;
       });
     }
@@ -219,7 +224,9 @@ const ViewDevotee = () => {
 
                   <td className="py-2">{devotee.gender}</td>
                   <td className="py-2">
-                    {new Date(devotee.date).toLocaleDateString()}
+                    {devotee.date?.map((d) => {
+                      return <p>{new Date(d).toLocaleDateString()}</p>;
+                    })}
                   </td>
                   <td className="py-2">
                     <button
@@ -317,7 +324,7 @@ const ViewDevotee = () => {
                     </div>
                   )}
                 </div>
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium">Date</label>
                   <input
                     type="date"
@@ -327,7 +334,7 @@ const ViewDevotee = () => {
                       setEditForm({ ...editForm, date: e.target.value })
                     }
                   />
-                </div>
+                </div> */}
               </div>
               <div className="flex justify-end mt-6 space-x-2">
                 <button

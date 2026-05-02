@@ -1,19 +1,26 @@
 import React from "react";
 import { createBrowserRouter, Router, RouterProvider } from "react-router";
-import Layout from "../features/layout/Layout";
-import AddNewDevotee from "../features/addNewDevotee/AddNewDevotee";
-import ViewDevotee from "../features/viewDevotee/ViewDevotee";
-import Dashboard from "../features/dashboard/Dashboard";
+import Layout from "../features/app/layout/Layout";
+import Dashboard from "../features/app/dashboard/Dashboard";
+import AddNewDevotee from "../features/app/addNewDevotee/AddNewDevotee";
+import ViewDevotee from "../features/app/viewDevotee/ViewDevotee";
+import Login from "../features/auth/login/Login";
 
 const AppRoutes = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout />,
       children: [
-        { index: true, element: <Dashboard /> },
-        { path: "newDevotee", element: <AddNewDevotee /> },
-        { path: "viewDevotee", element: <ViewDevotee /> },
+        { path: "login", children: [{ index: true, element: <Login /> }] },
+        {
+          path: "app",
+          element: <Layout />,
+          children: [
+            { index: true, element: <Dashboard /> },
+            { path: "newDevotee", element: <AddNewDevotee /> },
+            { path: "viewDevotee", element: <ViewDevotee /> },
+          ],
+        },
       ],
     },
   ]);

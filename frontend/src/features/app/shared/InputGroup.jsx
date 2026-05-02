@@ -13,7 +13,7 @@ const InputGroup = ({
   {
     if (type === "text" || type === "date")
       return (
-        <div className="m-1">
+        <div className="m-1 w-full">
           <label className="block py-1" htmlFor={name}>
             {label}
           </label>
@@ -23,7 +23,7 @@ const InputGroup = ({
             name={name}
             type={type}
             id={name}
-            className={`border p-1 ${error ? "border-red-500" : ""}`}
+            className={`border p-1 w-full ${error ? "border-red-500" : ""}`}
             disabled={disabled}
           />
           {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
@@ -31,7 +31,7 @@ const InputGroup = ({
       );
   }
   return (
-    <div className="m-1">
+    <div className="m-1 w-full">
       {type === "select" && (
         <>
           <label className="block py-1" htmlFor={name}>

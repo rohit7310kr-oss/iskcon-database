@@ -13,7 +13,23 @@ exports.getDevotees = async (req, res) => {
 
 exports.createDevotee = async (req, res) => {
   try {
-    const devotee = await Devotee.create(req.body);
+    const alreadyRegisteredDevotee = await Devotee.find({
+      phone: req.body.phone,
+    });
+    let devotee;
+    console.log(alreadyRegisteredDevotee);
+
+    if (alreadyRegisteredDevotee.length)
+      devotee = await Devotee.updateOne(
+        { phone: req.body.phone },
+        { $addToSet: { date: { $each: [req.body.date] } } },
+      );
+    else
+      devotee = await Devotee.create({
+        ...req.body,
+        date: [req.body.date],
+      });
+
     res.status(201).json(devotee);
   } catch (error) {
     res
