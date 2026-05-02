@@ -5,13 +5,15 @@ import Dashboard from "../features/app/dashboard/Dashboard";
 import AddNewDevotee from "../features/app/addNewDevotee/AddNewDevotee";
 import ViewDevotee from "../features/app/viewDevotee/ViewDevotee";
 import Login from "../features/auth/login/Login";
+import Register from "../features/auth/register/Register";
 
 const AppRoutes = () => {
   const router = createBrowserRouter([
     {
       path: "/",
       children: [
-        { path: "login", children: [{ index: true, element: <Login /> }] },
+        { path: "login", element: <Login /> },
+        { path: "register", element: <Register /> },
         {
           path: "app",
           element: <Layout />,

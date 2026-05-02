@@ -1,8 +1,11 @@
 import React from "react";
 import InputGroup from "../../app/shared/InputGroup";
 import Form from "../Form/Form";
+import { useNavigate } from "react-router";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   return (
     <Form>
       <InputGroup label="Email" />
@@ -15,7 +18,12 @@ const Login = () => {
       </button>
       <div className="text-gray-500">
         If don't have account, please registere here:{" "}
-        <span className="text-blue-500 cursor-pointer">click here</span>
+        <span
+          className="text-blue-500 cursor-pointer"
+          onClick={() => navigate("/register")}
+        >
+          click here
+        </span>
       </div>
     </Form>
   );

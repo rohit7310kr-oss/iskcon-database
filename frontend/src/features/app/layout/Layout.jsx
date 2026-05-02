@@ -13,7 +13,7 @@ const Layout = () => {
         </div>
         <nav className="flex-1 p-4 space-y-2">
           <Link
-            to="/"
+            to="/app"
             className="block px-4 py-2 rounded-lg hover:bg-orange-100 text-gray-700"
           >
             Dashboard
