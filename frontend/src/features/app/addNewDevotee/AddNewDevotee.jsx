@@ -37,31 +37,7 @@ const AddNewDevotee = () => {
               name="phone"
               error={errors.phone}
             />
-            <InputGroup
-              value={formData.gender}
-              onChange={inputOnChange}
-              type="select"
-              name="gender"
-              label="Select gender"
-              error={errors.gender}
-              selectConfig={{
-                options: [
-                  { value: "male", label: "Male" },
-                  { value: "female", label: "Female" },
-                  { value: "other", label: "Other" },
-                ],
-              }}
-            />
 
-            <InputGroup
-              value={formData.date}
-              onChange={inputOnChange}
-              type="date"
-              label="Date"
-              name="date"
-              error={errors.date}
-              // disabled={true}
-            />
             <InputGroup
               value={formData.address}
               onChange={inputOnChange}
@@ -77,6 +53,30 @@ const AddNewDevotee = () => {
               label="Occupation"
               name="occupation"
               error={errors.occupation}
+            />
+            <InputGroup
+              value={formData.gender}
+              onChange={inputOnChange}
+              type="select"
+              name="gender"
+              label="Select gender"
+              error={errors.gender}
+              selectConfig={{
+                options: [
+                  { value: "male", label: "Male" },
+                  { value: "female", label: "Female" },
+                  { value: "other", label: "Other" },
+                ],
+              }}
+            />
+            <InputGroup
+              value={formData.date}
+              onChange={inputOnChange}
+              type="date"
+              label="Date"
+              name="date"
+              error={errors.date}
+              // disabled={true}
             />
           </div>
           <button
