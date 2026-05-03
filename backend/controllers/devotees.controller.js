@@ -7,21 +7,7 @@ exports.getDevotees = catchAsyncHandler(async (req, res) => {
 });
 
 exports.createDevotee = catchAsyncHandler(async (req, res) => {
-  const alreadyRegisteredDevotee = await Devotee.find({
-    phone: req.body.phone,
-  });
-  let devotee;
-
-  if (alreadyRegisteredDevotee.length)
-    devotee = await Devotee.updateOne(
-      { phone: req.body.phone },
-      { $addToSet: { date: { $each: [req.body.date] } } },
-    );
-  else
-    devotee = await Devotee.create({
-      ...req.body,
-      date: [req.body.date],
-    });
+  const devotee = await Devotee.create(req.body);
 
   res.status(201).json(devotee);
 });

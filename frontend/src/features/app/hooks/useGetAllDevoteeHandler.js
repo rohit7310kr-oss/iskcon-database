@@ -28,7 +28,7 @@ const useGetAllDevoteeHandler = (setToast) => {
     handleGetDevotee();
   }, [count]);
 
-  return { devotees, listLoading, handleGetDevotee, reFetch };
+  return { devotees, listLoading, reFetch };
 };
 
 export default useGetAllDevoteeHandler;

@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { getAllDevotee, deleteDevotee } from "../service/devotees";
+import React, { useState } from "react";
+import { deleteDevotee } from "../service/devotees";
 import Toast from "../shared/Toast";
 import * as XLSX from "xlsx";
 import EditDevotee from "../editDevotee/EditDevotee";
 import useFilterHandler from "../hooks/useFilterHandler";
 import useEditFormHandler from "../hooks/useEditFormHandler";
 import useGetAllDevoteeHandler from "../hooks/useGetAllDevoteeHandler";
+import TableRow from "./TableRow";
+import ExpandedTable from "./ExpandedTable";
 
 const ViewDevotee = () => {
   const [toast, setToast] = useState(null);
+  const [isTableExpanded, setIsTableExpanded] = useState(false);
 
-  const { devotees, listLoading, handleGetDevotee, reFetch } =
-    useGetAllDevoteeHandler(setToast);
+  const { devotees, listLoading, reFetch } = useGetAllDevoteeHandler(setToast);
 
   const {
     filteredDevotees,
@@ -34,24 +36,6 @@ const ViewDevotee = () => {
     onSuccessEdit,
   } = useEditFormHandler(setToast, reFetch);
 
-  const [deleteLoadingId, setDeleteLoadingId] = useState(null);
-
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this devotee?")) {
-      setDeleteLoadingId(id);
-      try {
-        await deleteDevotee(id);
-        setToast({ type: "success", message: "Devotee deleted successfully." });
-        await handleGetDevotee();
-      } catch (err) {
-        console.log(err);
-        setToast({ type: "error", message: "Failed to delete devotee." });
-      } finally {
-        setDeleteLoadingId(null);
-      }
-    }
-  };
-
   const handleExport = () => {
     const data = filteredDevotees.map((d) => ({
       Name: d.fullName,
@@ -65,6 +49,30 @@ const ViewDevotee = () => {
     XLSX.utils.book_append_sheet(wb, ws, "Devotees");
     XLSX.writeFile(wb, "devotees.xlsx");
   };
+
+  const [deleteLoadingId, setDeleteLoadingId] = useState(null);
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this devotee?")) {
+      setDeleteLoadingId(id);
+      try {
+        await deleteDevotee(id);
+        setToast({ type: "success", message: "Devotee deleted successfully." });
+        reFetch();
+      } catch (err) {
+        console.log(err);
+        setToast({ type: "error", message: "Failed to delete devotee." });
+      } finally {
+        setDeleteLoadingId(null);
+      }
+    }
+  };
+
+  const devoteePhoneList = [];
+
+  filteredDevotees.forEach((el) => {
+    if (!devoteePhoneList.includes(el.phone)) devoteePhoneList.push(el.phone);
+  });
 
   return (
     <>
@@ -96,6 +104,15 @@ const ViewDevotee = () => {
               placeholder="Filter by date"
             />
           </div>
+          <select
+            className="border p-2"
+            value={isTableExpanded}
+            onChange={() => setIsTableExpanded((p) => !p)}
+          >
+            <option value="">Select table format</option>
+            <option value={true}>Expanded</option>
+            <option value={false}>Phone listing</option>
+          </select>
           <button
             onClick={handleExport}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -103,77 +120,31 @@ const ViewDevotee = () => {
             Export to Excel
           </button>
         </div>
-        <table className="w-full text-left">
-          <thead>
-            <tr className="border-b text-gray-600">
-              <th className="py-2">Name</th>
-              <th className="py-2">Phone</th>
-              <th className="py-2">Address</th>
-              <th className="py-2">Occupation</th>
-              <th className="py-2">Gender</th>
-              <th className="py-2">Date</th>
-              <th className="py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {listLoading ? (
-              <tr>
-                <td colSpan={6} className="py-4 text-center text-gray-600">
-                  Loading devotees...
-                </td>
-              </tr>
-            ) : filteredDevotees.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="py-4 text-center text-gray-600">
-                  No devotees found.
-                </td>
-              </tr>
-            ) : (
-              filteredDevotees.map((devotee) => (
-                <tr key={devotee._id} className="border-b hover:bg-gray-200">
-                  <td className="py-2">{devotee.fullName}</td>
-                  <td className="py-2">{devotee.phone}</td>
-                  <td className="py-2">{devotee.address}</td>
-                  <td className="py-2">{devotee.occupation}</td>
 
-                  <td className="py-2">{devotee.gender}</td>
-                  <td className="py-2">
-                    {devotee.date?.map((d) => {
-                      return <p>{new Date(d).toLocaleDateString()}</p>;
-                    })}
-                  </td>
-                  <td className="py-2">
-                    <button
-                      onClick={() => handleDelete(devotee._id)}
-                      disabled={deleteLoadingId === devotee._id || listLoading}
-                      className={`pr-2 text-red-500 hover:underline ${
-                        deleteLoadingId === devotee._id || listLoading
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }`}
-                    >
-                      {deleteLoadingId === devotee._id
-                        ? "Deleting..."
-                        : "Delete"}
-                    </button>
-                    <button
-                      onClick={() => handleEdit(devotee)}
-                      disabled={listLoading || editLoading}
-                      className={`pl-2 text-blue-500 hover:underline ${
-                        listLoading || editLoading
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }`}
-                    >
-                      Edit
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-
+        {!isTableExpanded ? (
+          <div className="w-full text-left">
+            {devoteePhoneList.map((el) => (
+              <TableRow
+                handleDelete={handleDelete}
+                deleteLoadingId={deleteLoadingId}
+                summery={el}
+                list={filteredDevotees}
+                editLoading={editLoading}
+                handleEdit={handleEdit}
+                listLoading={listLoading}
+              />
+            ))}
+          </div>
+        ) : (
+          <ExpandedTable
+            listLoading={listLoading}
+            filteredDevotees={filteredDevotees}
+            handleDelete={handleDelete}
+            deleteLoadingId={deleteLoadingId}
+            handleEdit={handleEdit}
+            editLoading={editLoading}
+          />
+        )}
         {/* Edit Modal */}
         {editModal.open && (
           <EditDevotee
