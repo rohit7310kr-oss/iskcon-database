@@ -13,7 +13,7 @@ import DatePicker from "../shared/DatePicker";
 
 const ViewDevotee = () => {
   const [toast, setToast] = useState(null);
-  const [isTableExpanded, setIsTableExpanded] = useState(false);
+  const [isTableExpanded, setIsTableExpanded] = useState(true);
 
   const { devotees, listLoading, reFetch } = useGetAllDevoteeHandler(setToast);
 

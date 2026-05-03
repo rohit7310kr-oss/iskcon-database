@@ -41,7 +41,7 @@ const InputGroup = ({
             onChange={onChange}
             value={value}
             name={name}
-            className={`border p-1 ${error ? "border-red-500" : ""}`}
+            className={`border p-1 w-full ${error ? "border-red-500" : ""}`}
           >
             <option value="">{label}</option>
             {selectConfig.options.map((option) => (

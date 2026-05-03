@@ -36,9 +36,7 @@ const useAddFormHandler = () => {
     if (!formData.gender) {
       newErrors.gender = "Please select a gender.";
     }
-    if (!formData.address) {
-      newErrors.address = "Please fill your address";
-    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };

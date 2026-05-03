@@ -6,6 +6,7 @@ import { useUser } from "../../context/userContext";
 
 const Login = () => {
   const { loginUser } = useUser();
+
   const initFormData = {
     user: "",
     password: "",

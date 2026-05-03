@@ -20,7 +20,7 @@ const AddNewDevotee = () => {
       <div className="bg-white p-6 rounded-xl shadow">
         <div className="pb-3 text-lg">Add new devotee</div>
         <form onSubmit={handleAddNewDevotee}>
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-1">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2">
             <InputGroup
               value={formData.fullName}
               onChange={inputOnChange}
@@ -38,22 +38,6 @@ const AddNewDevotee = () => {
               error={errors.phone}
             />
             <InputGroup
-              value={formData.address}
-              onChange={inputOnChange}
-              type="text"
-              label="Address"
-              name="address"
-              error={errors.address}
-            />
-            <InputGroup
-              value={formData.occupation}
-              onChange={inputOnChange}
-              type="text"
-              label="Occupation"
-              name="occupation"
-              error={errors.occupation}
-            />
-            <InputGroup
               value={formData.gender}
               onChange={inputOnChange}
               type="select"
@@ -68,6 +52,7 @@ const AddNewDevotee = () => {
                 ],
               }}
             />
+
             <InputGroup
               value={formData.date}
               onChange={inputOnChange}
@@ -76,6 +61,22 @@ const AddNewDevotee = () => {
               name="date"
               error={errors.date}
               // disabled={true}
+            />
+            <InputGroup
+              value={formData.address}
+              onChange={inputOnChange}
+              type="text"
+              label="Address"
+              name="address"
+              error={errors.address}
+            />
+            <InputGroup
+              value={formData.occupation}
+              onChange={inputOnChange}
+              type="text"
+              label="Occupation"
+              name="occupation"
+              error={errors.occupation}
             />
           </div>
           <button
