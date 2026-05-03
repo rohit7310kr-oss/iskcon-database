@@ -78,6 +78,10 @@ const ViewDevotee = () => {
     if (!devoteePhoneList.includes(el.phone)) devoteePhoneList.push(el.phone);
   });
 
+  const registeredPhoneListNum = devoteePhoneList.length;
+
+  const registeredDevotee = filteredDevotees.length;
+
   return (
     <>
       <Toast toast={toast} onClose={() => setToast(null)} />
@@ -115,6 +119,7 @@ const ViewDevotee = () => {
               />
             </div>
           </div>
+
           <select
             className="border p-2"
             value={isTableExpanded}
@@ -132,7 +137,16 @@ const ViewDevotee = () => {
             Export to Excel
           </button>
         </div>
-
+        <div className="flex flex-wrap gap-2 mb-4">
+          <div>
+            <p className="bg-green-300 p-1 mb-1">
+              {registeredDevotee}: Registered devotees
+            </p>
+            <p className="bg-yellow-300 p-1">
+              {registeredPhoneListNum}: Registered Phone number
+            </p>
+          </div>
+        </div>
         {!isTableExpanded ? (
           <div className="w-full text-left">
             {devoteePhoneList.map((el) => (

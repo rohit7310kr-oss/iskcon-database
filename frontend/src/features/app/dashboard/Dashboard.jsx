@@ -7,6 +7,7 @@ const Dashboard = () => {
     male: 0,
     female: 0,
     other: 0,
+    devoteesRegisteredToday: 0,
   });
 
   useEffect(() => {
@@ -18,7 +19,13 @@ const Dashboard = () => {
         const male = devotees.filter((d) => d.gender === "male").length;
         const female = devotees.filter((d) => d.gender === "female").length;
         const other = devotees.filter((d) => d.gender === "other").length;
-        setStats({ total, male, female, other });
+        const devoteesRegisteredToday = devotees.filter(
+          (d) =>
+            new Date(d.date).toLocaleDateString() ===
+            new Date().toLocaleDateString(),
+        ).length;
+
+        setStats({ total, male, female, other, devoteesRegisteredToday });
       } catch (err) {
         console.log(err);
       }
@@ -45,6 +52,10 @@ const Dashboard = () => {
         <div className="bg-yellow-100 p-4 rounded">
           <h3 className="text-lg font-semibold">Other</h3>
           <p className="text-2xl">{stats.other}</p>
+        </div>
+        <div className="bg-yellow-100 p-4 rounded">
+          <h3 className="text-lg font-semibold">Devotees registered today</h3>
+          <p className="text-2xl">{stats.devoteesRegisteredToday}</p>
         </div>
       </div>
     </div>
