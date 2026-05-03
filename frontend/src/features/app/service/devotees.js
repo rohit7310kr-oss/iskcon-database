@@ -1,4 +1,4 @@
-import API from "./axios";
+import API from "../../../services/axios";
 
 export const getAllDevotee = () => API.get("/api/v1/devotees");
 

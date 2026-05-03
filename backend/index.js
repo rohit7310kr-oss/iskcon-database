@@ -2,7 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
-const devoteeRoutes = require("./routes/devoteeRoutes");
+const devoteeRoutes = require("./routes/devotee.routes");
+const userRoutes = require("./routes/user.routes");
+
+const errorHandler = require("./middleware/errorHandler");
 
 dotenv.config();
 
@@ -17,6 +20,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/devotees", devoteeRoutes);
+app.use("/api/v1/user", userRoutes);
+
+app.use(errorHandler);
 
 connectDB()
   .then(() => {

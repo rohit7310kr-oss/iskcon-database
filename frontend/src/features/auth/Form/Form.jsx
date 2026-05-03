@@ -1,9 +1,11 @@
 import React from "react";
 
-const Form = ({ children }) => {
+const Form = ({ onSubmit, children }) => {
   return (
     <div className="flex items-center justify-center h-screen">
-      <form className="px-5 py-10 shadow-lg">{children}</form>
+      <form onSubmit={onSubmit} className="px-5 py-10 shadow-lg">
+        {children}
+      </form>
     </div>
   );
 };
