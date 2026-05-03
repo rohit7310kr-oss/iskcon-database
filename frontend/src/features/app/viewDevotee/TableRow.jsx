@@ -65,8 +65,8 @@ const TableRow = ({
           </thead>
           <tbody>
             {devoteeList.map((el) => (
-              <tr className=" hover:bg-gray-300">
-                <td className="py-2">{el.fullName}</td>
+              <tr className="hover:bg-gray-300">
+                <td className="py-2 p">{el.fullName}</td>
                 <td className="py-2">{el.address}</td>
                 <td className="py-2">{el.occupation}</td>
                 <td className="py-2">{el.gender}</td>

@@ -8,7 +8,6 @@ import useEditFormHandler from "../hooks/useEditFormHandler";
 import useGetAllDevoteeHandler from "../hooks/useGetAllDevoteeHandler";
 import TableRow from "./TableRow";
 import ExpandedTable from "./ExpandedTable";
-import DayPicker from "../shared/DatePicker";
 import DatePicker from "../shared/DatePicker";
 
 const ViewDevotee = () => {
@@ -85,92 +84,147 @@ const ViewDevotee = () => {
   return (
     <>
       <Toast toast={toast} onClose={() => setToast(null)} />
-      <div className="bg-white p-6 rounded-xl shadow">
-        <div className="pb-3 flex justify-between items-center">
-          <div className="flex flex-wrap gap-2 ">
-            <input
-              className="border p-2"
-              placeholder="search with name, phone"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <select
-              className="border p-2"
-              value={genderFilter}
-              onChange={(e) => setGenderFilter(e.target.value)}
-            >
-              <option value="">All genders</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-            <div>
-              <label htmlFor="consistent">Check consistency </label>
+      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+        {/* Header Section */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-6">Devotees</h1>
+
+          {/* Controls - Responsive Grid */}
+          <div className="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-4">
+            {/* Search and Gender Filter */}
+            <div className="lg:col-span-5 flex flex-col sm:flex-row gap-3">
               <input
-                id="consistent"
-                type="checkbox"
-                value={isCheckingConsistent}
-                onChange={() => setIsCheckingConsistent((c) => !c)}
+                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm"
+                placeholder="Search name, phone..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
-              <DatePicker
-                className=""
-                dateFilter={dateFilter}
-                setDateFilter={setDateFilter}
-              />
+              <select
+                className="px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm bg-white cursor-pointer"
+                value={genderFilter}
+                onChange={(e) => setGenderFilter(e.target.value)}
+              >
+                <option value="">All genders</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            {/* View Mode */}
+            <div className="lg:col-span-4 flex items-center gap-3">
+              <label
+                htmlFor="viewMode"
+                className="font-medium text-gray-700 text-sm whitespace-nowrap"
+              >
+                View Mode:
+              </label>
+              <select
+                id="viewMode"
+                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm bg-white cursor-pointer"
+                value={isTableExpanded}
+                onChange={() => setIsTableExpanded((p) => !p)}
+              >
+                <option value="">Select format</option>
+                <option value={true}>Expanded</option>
+                <option value={false}>Phone listing</option>
+              </select>
+            </div>
+
+            {/* Export Button */}
+            <div className="lg:col-span-3">
+              <button
+                onClick={handleExport}
+                className="w-full px-4 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 active:scale-95 transition-all shadow-md text-sm"
+              >
+                📥 Export Excel
+              </button>
             </div>
           </div>
-
-          <select
-            className="border p-2"
-            value={isTableExpanded}
-            onChange={() => setIsTableExpanded((p) => !p)}
-          >
-            <option value="">Select table format</option>
-            <option value={true}>Expanded</option>
-            <option value={false}>Phone listing</option>
-          </select>
-
-          <button
-            onClick={handleExport}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Export to Excel
-          </button>
         </div>
-        <div className="flex flex-wrap gap-2 mb-4">
-          <div>
-            <p className="bg-green-300 p-1 mb-1">
-              {registeredDevotee}: Registered devotees
-            </p>
-            <p className="bg-yellow-300 p-1">
-              {registeredPhoneListNum}: Registered Phone number
-            </p>
+
+        {/* Filters and Options */}
+        <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 pb-4 border-b border-gray-200">
+          <div className="flex items-center gap-3">
+            <input
+              id="consistent"
+              type="checkbox"
+              checked={isCheckingConsistent}
+              onChange={() => setIsCheckingConsistent((c) => !c)}
+              className="w-5 h-5 text-blue-500 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            />
+            <label
+              htmlFor="consistent"
+              className="font-medium text-gray-700 text-sm cursor-pointer"
+            >
+              Check consistency
+            </label>
           </div>
-        </div>
-        {!isTableExpanded ? (
-          <div className="w-full text-left">
-            {devoteePhoneList.map((el) => (
-              <TableRow
-                handleDelete={handleDelete}
-                deleteLoadingId={deleteLoadingId}
-                summery={el}
-                list={filteredDevotees}
-                editLoading={editLoading}
-                handleEdit={handleEdit}
-                listLoading={listLoading}
-              />
-            ))}
-          </div>
-        ) : (
-          <ExpandedTable
-            listLoading={listLoading}
-            filteredDevotees={filteredDevotees}
-            handleDelete={handleDelete}
-            deleteLoadingId={deleteLoadingId}
-            handleEdit={handleEdit}
-            editLoading={editLoading}
+          <DatePicker
+            className="flex-1"
+            dateFilter={dateFilter}
+            setDateFilter={setDateFilter}
           />
-        )}
+        </div>
+
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div className="bg-gradient-to-br from-green-50 to-green-100 border-l-4 border-green-500 p-4 rounded-lg shadow-sm">
+            <p className="text-gray-600 text-sm font-medium mb-1">
+              Registered Devotees
+            </p>
+            <p className="text-3xl font-bold text-green-700">
+              {registeredDevotee}
+            </p>
+          </div>
+          <div className="bg-gradient-to-br from-amber-50 to-amber-100 border-l-4 border-amber-500 p-4 rounded-lg shadow-sm">
+            <p className="text-gray-600 text-sm font-medium mb-1">
+              Registered Phone Numbers
+            </p>
+            <p className="text-3xl font-bold text-amber-700">
+              {registeredPhoneListNum}
+            </p>
+          </div>
+        </div>
+        {/* Table Section */}
+        <div className="overflow-x-auto rounded-lg border border-gray-200">
+          {listLoading ? (
+            <div className="flex items-center justify-center p-12">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+                <p className="text-gray-600 font-medium">Loading devotees...</p>
+              </div>
+            </div>
+          ) : filteredDevotees.length === 0 ? (
+            <div className="text-center p-12">
+              <p className="text-gray-500 text-lg">No devotees found</p>
+            </div>
+          ) : !isTableExpanded ? (
+            <div className="w-full text-left">
+              {devoteePhoneList.map((el) => (
+                <TableRow
+                  key={el}
+                  handleDelete={handleDelete}
+                  deleteLoadingId={deleteLoadingId}
+                  summery={el}
+                  list={filteredDevotees}
+                  editLoading={editLoading}
+                  handleEdit={handleEdit}
+                  listLoading={listLoading}
+                />
+              ))}
+            </div>
+          ) : (
+            <ExpandedTable
+              listLoading={listLoading}
+              filteredDevotees={filteredDevotees}
+              handleDelete={handleDelete}
+              deleteLoadingId={deleteLoadingId}
+              handleEdit={handleEdit}
+              editLoading={editLoading}
+            />
+          )}
+        </div>
         {/* Edit Modal */}
         {editModal.open && (
           <EditDevotee

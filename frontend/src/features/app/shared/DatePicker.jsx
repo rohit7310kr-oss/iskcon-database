@@ -1,10 +1,10 @@
 import { DatePickerInput } from "@mantine/dates";
 import { MantineProvider } from "@mantine/core";
 
-function DatePicker({ dateFilter = [], setDateFilter }) {
+function DatePicker({ className, dateFilter = [], setDateFilter }) {
   return (
     <MantineProvider>
-      <div style={{ padding: "20px", maxWidth: "300px" }}>
+      <div className={className}>
         <DatePickerInput
           label="Pick dates"
           placeholder="Select multiple dates"
