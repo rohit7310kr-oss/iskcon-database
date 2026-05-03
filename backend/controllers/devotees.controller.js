@@ -11,7 +11,6 @@ exports.createDevotee = catchAsyncHandler(async (req, res) => {
     phone: req.body.phone,
   });
   let devotee;
-  console.log(alreadyRegisteredDevotee);
 
   if (alreadyRegisteredDevotee.length)
     devotee = await Devotee.updateOne(
