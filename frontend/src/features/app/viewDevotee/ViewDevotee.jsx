@@ -41,13 +41,60 @@ const ViewDevotee = () => {
 
   const handleExport = () => {
     const data = filteredDevotees.map((d) => ({
-      Name: d.fullName,
-      Phone: d.phone,
-      Address: d.address,
-      Gender: d.gender,
-      Date: new Date(d.date).toLocaleDateString(),
+      name: d.fullName,
+      phone: d.phone,
+      address: d.address,
+      gender: d.gender,
+      date: new Date(d.date).toLocaleDateString("en-GB"),
+      occupation: d.occupation,
     }));
-    const ws = XLSX.utils.json_to_sheet(data);
+
+    // const ws = XLSX.utils.json_to_sheet(data);
+    // const wb = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(wb, ws, "Devotees");
+    // XLSX.writeFile(wb, "devotees.xlsx");
+
+    const grouped = Object.values(
+      data.reduce((acc, item) => {
+        if (!acc[item.phone]) {
+          acc[item.phone] = {
+            phone: item.phone,
+            rows: [],
+          };
+        }
+
+        acc[item.phone].rows.push(item);
+
+        return acc;
+      }, {}),
+    );
+
+    const excelRows = [];
+
+    grouped.forEach((group) => {
+      group.rows.forEach((row) => {
+        excelRows.push({
+          name: row.name,
+          phone: row.phone,
+          gender: row.gender,
+          date: row.date,
+          address: row.address,
+          occupation: row.occupation,
+        });
+      });
+
+      // empty row after each group
+      excelRows.push({
+        name: "",
+        phone: "",
+        gender: "",
+        date: "",
+        address: "",
+        occupation: "",
+      });
+    });
+
+    const ws = XLSX.utils.json_to_sheet(excelRows);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Devotees");
     XLSX.writeFile(wb, "devotees.xlsx");

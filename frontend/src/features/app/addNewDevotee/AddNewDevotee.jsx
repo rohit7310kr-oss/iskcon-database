@@ -12,6 +12,9 @@ const AddNewDevotee = () => {
     handleAddNewDevotee,
     inputOnChange,
     loading,
+    file,
+    setFile,
+    handleUpload,
   } = useAddFormHandler();
 
   return (
@@ -89,6 +92,28 @@ const AddNewDevotee = () => {
             {loading ? "Adding..." : "Add devotee"}
           </button>
         </form>
+        <div className="flex gap-3">
+          <input
+            type="file"
+            onChange={(e) => {
+              setFile(e.target.files[0]);
+            }}
+            accept=".xlsx,.xls,.csv"
+            // disabled={loading}
+            className={`block border my-5 p-3 w-50 rounded text-white bg-gray-400 hover:bg-gray-500
+            }`}
+            // className={`block border my-5 p-3 w-50 rounded text-white ${
+            //   loading ? "bg-gray-400" : "bg-green-400 hover:bg-green-500"
+            // }`}
+          />
+
+          <button
+            onClick={handleUpload}
+            className="block border my-5 p-3 w-50 rounded text-white bg-amber-400 hover:bg-amber-500"
+          >
+            Upload
+          </button>
+        </div>
       </div>
     </>
   );

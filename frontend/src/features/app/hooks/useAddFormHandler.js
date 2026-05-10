@@ -1,9 +1,26 @@
 import React from "react";
 import { useState } from "react";
-import { createDevotee } from "../service/devotees";
+import { createDevotee, importDevotee } from "../service/devotees";
 
 const useAddFormHandler = () => {
   const today = new Date().toISOString().split("T")[0];
+
+  const [file, setFile] = useState(null);
+
+  const handleUpload = async () => {
+    try {
+      const fileData = new FormData();
+      console.log(file);
+      fileData.append("file", file);
+
+      await importDevotee(fileData);
+
+      alert("Uploaded");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
@@ -77,6 +94,9 @@ const useAddFormHandler = () => {
     loading,
     toast,
     setToast,
+    file,
+    setFile,
+    handleUpload,
   };
 };
 

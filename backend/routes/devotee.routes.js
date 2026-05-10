@@ -6,9 +6,14 @@ const {
   getDevoteeById,
   updateDevotee,
   deleteDevotee,
+  importDevotee,
 } = require("../controllers/devotees.controller");
 const authMiddleware = require("../middleware/authMiddleware");
 const allowRoles = require("../middleware/allowRoles");
+
+const multer = require("multer");
+
+const upload = multer({ dest: "uploads/" });
 
 router.use(authMiddleware);
 
@@ -21,5 +26,9 @@ router
 router.use(allowRoles("volunteer", "admin"));
 
 router.route("/").get(getDevotees).post(createDevotee);
+
+router
+  .route("/upload")
+  .post(allowRoles("admin"), upload.single("file"), importDevotee);
 
 module.exports = router;
