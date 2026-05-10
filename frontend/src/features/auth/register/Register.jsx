@@ -5,7 +5,7 @@ import InputGroup from "../../app/shared/InputGroup";
 import { useUser } from "../../context/userContext";
 
 const Register = () => {
-  const { registerUser } = useUser();
+  const { registerUser, loading } = useUser();
 
   const navigate = useNavigate();
   const initFormField = {

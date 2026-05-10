@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const catchAsyncHandler = require("../middleware/catchAsyncHandler");
 const User = require("../models/User.model");
+const client = require("./../config/redis");
 
 const getToken = function (role, email) {
   return jwt.sign({ role, email }, process.env.JWT_SECRET, {
@@ -14,6 +15,7 @@ exports.login = catchAsyncHandler(async function (req, res) {
   const query = isEmail ? { email: req.body.user } : { phone: req.body.user };
 
   const user = await User.findOne(query);
+
   if (!user)
     return res
       .status(400)
@@ -27,6 +29,16 @@ exports.login = catchAsyncHandler(async function (req, res) {
   const token = getToken(user.role, user.email);
 
   res.status(200).json({ token, status: "success", data: user });
+});
+
+exports.logoutUser = catchAsyncHandler(async function (req, res) {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.decode(token);
+
+  const ttl = decoded.exp - Math.floor(Date.now() / 1000);
+  await client.set(`iskconDatabase:blacklist:${token}`, "true", { ex: ttl });
+
+  res.status(200).json({ status: "success", message: "Logout success" });
 });
 
 exports.createUser = catchAsyncHandler(async function (req, res) {

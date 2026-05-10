@@ -3,13 +3,16 @@ import AddNewDevotee from "../addNewDevotee/AddNewDevotee";
 import AllDevotees from "../viewDevotee/ViewDevotee";
 import { Link, Outlet } from "react-router";
 import { useUser } from "../../context/userContext";
+import Loader from "../../shared/Loader";
 
 const Layout = () => {
-  const { user, logout } = useUser();
+  const { user, loading, logout } = useUser();
 
   const logoutHandler = function () {
     logout();
   };
+
+  if (loading.status) return <Loader message={loading.message} />;
 
   return (
     // Side bar
