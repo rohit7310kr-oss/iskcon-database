@@ -30,6 +30,7 @@ const InputGroup = ({
         </div>
       );
   }
+
   return (
     <div className="m-1 w-full">
       {type === "select" && (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { deleteDevotee } from "../service/devotees";
 import Toast from "../shared/Toast";
 import * as XLSX from "xlsx";
@@ -10,9 +10,7 @@ import TableRow from "./TableRow";
 import ExpandedTable from "./ExpandedTable";
 import DatePicker from "../shared/DatePicker";
 
-const ViewDevotee = () => {
-  const [toast, setToast] = useState(null);
-  const [isTableExpanded, setIsTableExpanded] = useState(true);
+const NewDevotee = () => {
   const { devotees, listLoading, reFetch } = useGetAllDevoteeHandler(setToast);
 
   const {
@@ -76,7 +74,7 @@ const ViewDevotee = () => {
           name: row.name,
           phone: row.phone,
           gender: row.gender,
-          registrationDate: row.registrationDate,
+          date: row.date,
           address: row.address,
           occupation: row.occupation,
         });
@@ -87,7 +85,7 @@ const ViewDevotee = () => {
         name: "",
         phone: "",
         gender: "",
-        registrationDate: "",
+        date: "",
         address: "",
         occupation: "",
       });
@@ -289,4 +287,4 @@ const ViewDevotee = () => {
   );
 };
 
-export default ViewDevotee;
+export default NewDevotee;

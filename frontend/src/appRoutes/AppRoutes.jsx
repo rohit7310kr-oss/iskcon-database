@@ -4,6 +4,7 @@ import Layout from "../features/app/layout/Layout";
 import Dashboard from "../features/app/dashboard/Dashboard";
 import AddNewDevotee from "../features/app/addNewDevotee/AddNewDevotee";
 import ViewDevotee from "../features/app/viewDevotee/ViewDevotee";
+
 import Login from "../features/auth/login/Login";
 import Register from "../features/auth/register/Register";
 import UserProvider from "../features/context/userContext";
@@ -26,8 +27,9 @@ const AppRoutes = () => {
           element: <Layout />,
           children: [
             { index: true, element: <Dashboard /> },
-            { path: "newDevotee", element: <AddNewDevotee /> },
-            { path: "viewDevotee", element: <ViewDevotee /> },
+            { path: "addNewDevotee", element: <AddNewDevotee /> },
+            { path: "devotees", element: <ViewDevotee /> },
+            // { path: "connectedDevotee", element: <ConnectedDevotee /> },
           ],
         },
       ],

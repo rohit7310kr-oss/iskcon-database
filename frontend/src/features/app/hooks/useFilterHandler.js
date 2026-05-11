@@ -1,13 +1,21 @@
 import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router";
 
 const useFilterHandler = (devotees) => {
   const [search, setSearch] = useState("");
   const [genderFilter, setGenderFilter] = useState("");
   const [dateFilter, setDateFilter] = useState([]);
   const [isCheckingConsistent, setIsCheckingConsistent] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  const pageFilter = searchParams.get("selected");
 
   const filteredDevotees = useMemo(() => {
-    let filtered = devotees;
+    let filtered =
+      pageFilter === "new" || !pageFilter
+        ? devotees
+        : devotees.filter((d) => d.status === pageFilter);
+
     if (search) {
       filtered = filtered.filter(
         (d) =>
@@ -15,9 +23,11 @@ const useFilterHandler = (devotees) => {
           d.phone.toString().includes(search),
       );
     }
+
     if (genderFilter) {
       filtered = filtered.filter((d) => d.gender === genderFilter);
     }
+
     if (dateFilter.length) {
       const dateFilterIso = dateFilter.map((el) =>
         new Date(el).toLocaleDateString(),
@@ -49,7 +59,7 @@ const useFilterHandler = (devotees) => {
     }
 
     return filtered;
-  }, [search, genderFilter, dateFilter, devotees]);
+  }, [search, genderFilter, dateFilter, devotees, pageFilter]);
 
   return {
     filteredDevotees,

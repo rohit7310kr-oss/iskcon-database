@@ -27,7 +27,7 @@ const useAddFormHandler = () => {
     address: "",
     occupation: "",
     gender: "",
-    date: today,
+    registrationDate: today,
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -70,7 +70,7 @@ const useAddFormHandler = () => {
         address: "",
         occupation: "",
         gender: "",
-        date: today,
+        registrationDate: today,
       });
       setErrors({});
     } catch (err) {

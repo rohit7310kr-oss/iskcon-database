@@ -44,7 +44,7 @@ const ExpandedTable = ({
 
               <td className="py-2">{devotee.gender}</td>
               <td className="py-2">
-                <p>{new Date(devotee.date).toLocaleDateString()}</p>
+                <p>{new Date(devotee.registrationDate).toLocaleDateString()}</p>
               </td>
               <td className="py-2">
                 <button
