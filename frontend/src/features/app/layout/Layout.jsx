@@ -32,19 +32,31 @@ const Layout = () => {
             to="addNewDevotee"
             className="block px-4 py-2 rounded-lg hover:bg-orange-100 text-gray-700"
           >
+            Courses
+          </Link>
+          <Link
+            to="addNewDevotee"
+            className="block px-4 py-2 rounded-lg hover:bg-orange-100 text-gray-700"
+          >
             Add new devotee
           </Link>
           <Link
-            to="devotees?selected=new"
+            to="devotees?page=new"
             className="block px-4 py-2 rounded-lg hover:bg-orange-100 text-gray-700"
           >
             New devotees
           </Link>
           <Link
-            to="devotees?selected=connected"
+            to="devotees?page=iyf"
             className="block px-4 py-2 rounded-lg hover:bg-orange-100 text-gray-700"
           >
-            Connected devotees
+            IYF
+          </Link>
+          <Link
+            to="devotees?page=congreation"
+            className="block px-4 py-2 rounded-lg hover:bg-orange-100 text-gray-700"
+          >
+            Congreation
           </Link>
         </nav>
         <div className="p-4 border-t">

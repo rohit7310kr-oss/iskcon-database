@@ -30,7 +30,7 @@ const devoteeSchema = new mongoose.Schema({
     ],
     default: "non-initiated",
   },
-  maritialStatus: {
+  maritalStatus: {
     type: String,
     enum: ["un-married", "married", "widowed", "brahmchari"],
   },

@@ -6,6 +6,7 @@ const ExpandedTable = ({
   handleDelete,
   deleteLoadingId,
   handleEdit,
+  handleView,
   editLoading,
 }) => {
   return (
@@ -48,9 +49,15 @@ const ExpandedTable = ({
               </td>
               <td className="py-2">
                 <button
+                  onClick={() => handleView(devotee)}
+                  className={`pr-2 text-yellow-500 hover:underline`}
+                >
+                  View
+                </button>
+                <button
                   onClick={() => handleDelete(devotee._id)}
                   disabled={deleteLoadingId === devotee._id || listLoading}
-                  className={`pr-2 text-red-500 hover:underline ${
+                  className={`px-4 text-red-500 hover:underline ${
                     deleteLoadingId === devotee._id || listLoading
                       ? "opacity-50 cursor-not-allowed"
                       : ""

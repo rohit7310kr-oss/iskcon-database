@@ -9,11 +9,14 @@ import useGetAllDevoteeHandler from "../hooks/useGetAllDevoteeHandler";
 import TableRow from "./TableRow";
 import ExpandedTable from "./ExpandedTable";
 import DatePicker from "../shared/DatePicker";
+import { useSearchParams } from "react-router";
+import ViewDevoteeModal from "../viewDevoteeModal/ViewDevoteeModal";
 
 const ViewDevotee = () => {
   const [toast, setToast] = useState(null);
   const [isTableExpanded, setIsTableExpanded] = useState(true);
   const { devotees, listLoading, reFetch } = useGetAllDevoteeHandler(setToast);
+  const [searchParams] = useSearchParams();
 
   const {
     filteredDevotees,
@@ -27,16 +30,26 @@ const ViewDevotee = () => {
     setIsCheckingConsistent,
   } = useFilterHandler(devotees);
 
+  const [modal, setModal] = useState({ open: false, type: "edit" });
+  const [selectedDevotee, setSelectedDevotee] = useState(null);
+
+  const handleHideModal = function () {
+    setModal({ open: false });
+  };
+
+  const handleShowModal = function (type, devotee) {
+    setModal({ open: true, type });
+    setSelectedDevotee(devotee);
+  };
+
   const {
     editForm,
     setEditForm,
     editLoading,
     setEditLoading,
     handleEdit,
-    editModal,
-    setEditModal,
     onSuccessEdit,
-  } = useEditFormHandler(setToast, reFetch);
+  } = useEditFormHandler(setToast, handleHideModal, handleShowModal, reFetch);
 
   const handleExport = () => {
     const data = filteredDevotees.map((d) => ({
@@ -115,6 +128,12 @@ const ViewDevotee = () => {
         setDeleteLoadingId(null);
       }
     }
+  };
+
+  const handleView = function (devotee) {
+    console.log(devotee);
+    setModal({ open: true, type: "view" });
+    setSelectedDevotee(devotee);
   };
 
   const devoteePhoneList = [];
@@ -267,21 +286,31 @@ const ViewDevotee = () => {
               handleDelete={handleDelete}
               deleteLoadingId={deleteLoadingId}
               handleEdit={handleEdit}
+              handleView={handleView}
               editLoading={editLoading}
             />
           )}
         </div>
         {/* Edit Modal */}
-        {editModal.open && (
+        {modal.open && modal.type === "edit" && (
           <EditDevotee
-            editModal={editModal}
+            modal={modal}
+            handleHideModal={handleHideModal}
+            selectedDevotee={selectedDevotee}
+            setSelectedDevotee={setSelectedDevotee}
             editForm={editForm}
             setEditForm={setEditForm}
             setToast={setToast}
-            setEditModal={setEditModal}
             onSuccessEdit={onSuccessEdit}
             setEditLoading={setEditLoading}
             editLoading={editLoading}
+          />
+        )}
+
+        {modal.open && modal.type === "view" && (
+          <ViewDevoteeModal
+            selectedDevotee={selectedDevotee}
+            handleHideModal={handleHideModal}
           />
         )}
       </div>

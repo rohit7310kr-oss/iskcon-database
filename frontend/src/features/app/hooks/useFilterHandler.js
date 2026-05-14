@@ -1,14 +1,11 @@
 import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router";
 
 const useFilterHandler = (devotees) => {
   const [search, setSearch] = useState("");
   const [genderFilter, setGenderFilter] = useState("");
   const [dateFilter, setDateFilter] = useState([]);
   const [isCheckingConsistent, setIsCheckingConsistent] = useState(false);
-  const [searchParams] = useSearchParams();
-
-  const pageFilter = searchParams.get("selected");
+  const [pageFilter, setPageFilter] = useState();
 
   const filteredDevotees = useMemo(() => {
     let filtered =
@@ -62,6 +59,7 @@ const useFilterHandler = (devotees) => {
   }, [search, genderFilter, dateFilter, devotees, pageFilter]);
 
   return {
+    setPageFilter,
     filteredDevotees,
     setSearch,
     search,

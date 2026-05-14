@@ -9,8 +9,12 @@ import {
 import React from "react";
 import { useState } from "react";
 
-const useEditFormHandler = (setToast, reFetch) => {
-  const [editModal, setEditModal] = useState({ open: false, devotee: null });
+const useEditFormHandler = (
+  setToast,
+  handleHideModal,
+  handleShowModal,
+  reFetch,
+) => {
   const [editLoading, setEditLoading] = useState(false);
   const [editForm, setEditForm] = useState({
     fullName: "",
@@ -25,8 +29,7 @@ const useEditFormHandler = (setToast, reFetch) => {
   const [editErrors, setEditErrors] = useState({});
 
   const handleEdit = (devotee) => {
-    console.log("setting Edit form", devotee);
-    setEditModal({ open: true, devotee });
+    handleShowModal("edit", devotee);
     setEditForm({
       fullName: devotee.fullName,
       phone: devotee.phone,
@@ -44,9 +47,9 @@ const useEditFormHandler = (setToast, reFetch) => {
         (el) => el.value === devotee.maritalStatus,
       ),
       occupation: Occupations.find((el) => el.value === devotee.occupation),
-      services: Services.filter((s) => devotee.services.includes(s)),
-      skills: skillsOptions.filter((s) => devotee.skills.includes(s)),
-      booksRead: books.filter((b) => devotee.booksRead.includes(b)),
+      services: Services.filter((s) => devotee.services.includes(s.value)),
+      skills: skillsOptions.filter((s) => devotee.skills.includes(s.value)),
+      booksRead: books.filter((b) => devotee.booksRead.includes(b.value)),
       age: devotee.age,
       chantingRounds: devotee.chantingRounds,
       templeName: devotee.templeName,
@@ -57,14 +60,14 @@ const useEditFormHandler = (setToast, reFetch) => {
       education: devotee.education,
       company: devotee.company,
       designation: devotee.designation,
-      guru: devotee.guru,
+      guruName: devotee.guruName,
     });
     setEditErrors({});
   };
 
   const onSuccessEdit = function () {
     setToast({ type: "success", message: "Devotee updated successfully." });
-    setEditModal({ open: false, devotee: null });
+    handleHideModal();
     reFetch();
   };
 
@@ -76,8 +79,6 @@ const useEditFormHandler = (setToast, reFetch) => {
     setEditLoading,
     handleEdit,
     editErrors,
-    editModal,
-    setEditModal,
   };
 };
 
