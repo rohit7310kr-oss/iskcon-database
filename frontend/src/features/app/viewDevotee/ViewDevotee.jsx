@@ -49,7 +49,13 @@ const ViewDevotee = () => {
     setEditLoading,
     handleEdit,
     onSuccessEdit,
-  } = useEditFormHandler(setToast, handleHideModal, handleShowModal, reFetch);
+  } = useEditFormHandler(
+    setToast,
+    handleHideModal,
+    handleShowModal,
+    filteredDevotees,
+    reFetch,
+  );
 
   const handleExport = () => {
     const data = filteredDevotees.map((d) => ({
@@ -130,8 +136,8 @@ const ViewDevotee = () => {
     }
   };
 
-  const handleView = function (devotee) {
-    console.log(devotee);
+  const handleView = function (id) {
+    const devotee = filteredDevotees.find((el) => el._id === id);
     setModal({ open: true, type: "view" });
     setSelectedDevotee(devotee);
   };
@@ -145,6 +151,13 @@ const ViewDevotee = () => {
   const registeredPhoneListNum = devoteePhoneList.length;
 
   const registeredDevotee = filteredDevotees.length;
+
+  const columns = [
+    { label: "Name", key: "fullName" },
+    { label: "Gender", key: "gender" },
+    { label: "Address", key: "address" },
+    { label: "Status", key: "status" },
+  ];
 
   return (
     <>
@@ -281,9 +294,24 @@ const ViewDevotee = () => {
             </div>
           ) : (
             <ExpandedTable
+              columns={columns}
               listLoading={listLoading}
-              filteredDevotees={filteredDevotees}
-              handleDelete={handleDelete}
+              data={filteredDevotees}
+              actions={[
+                { label: "View", color: "yellow", onClick: handleView },
+                {
+                  label: "Edit",
+                  color: "blue",
+                  onClick: handleEdit,
+                  loading: editLoading,
+                },
+                {
+                  label: "delete",
+                  color: "red",
+                  onClick: handleDelete,
+                  loading: deleteLoadingId,
+                },
+              ]}
               deleteLoadingId={deleteLoadingId}
               handleEdit={handleEdit}
               handleView={handleView}
@@ -311,6 +339,7 @@ const ViewDevotee = () => {
           <ViewDevoteeModal
             selectedDevotee={selectedDevotee}
             handleHideModal={handleHideModal}
+            handleShowModal={handleShowModal}
           />
         )}
       </div>

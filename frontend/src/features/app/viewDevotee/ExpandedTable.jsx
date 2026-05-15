@@ -1,24 +1,20 @@
 import React from "react";
+import Button from "../shared/Button";
+import { getFormattedDate } from "../../utils/dateUtils";
 
 const ExpandedTable = ({
-  listLoading,
-  filteredDevotees,
-  handleDelete,
-  deleteLoadingId,
-  handleEdit,
-  handleView,
-  editLoading,
+  columns,
+  data = [],
+  listLoading = false,
+  actions = [],
 }) => {
   return (
     <table className="w-full text-left">
       <thead>
         <tr className="border-b text-gray-600">
-          <th className="py-2">Name</th>
-          <th className="py-2">Phone</th>
-          <th className="py-2">Address</th>
-          <th className="py-2">Occupation</th>
-          <th className="py-2">Gender</th>
-          <th className="py-2">Date</th>
+          {columns.map((el) => (
+            <th className="py-2">{el.label}</th>
+          ))}
           <th className="py-2">Actions</th>
         </tr>
       </thead>
@@ -26,56 +22,36 @@ const ExpandedTable = ({
         {listLoading ? (
           <tr>
             <td colSpan={6} className="py-4 text-center text-gray-600">
-              Loading devotees...
+              Loading...
             </td>
           </tr>
-        ) : filteredDevotees.length === 0 ? (
+        ) : data?.length === 0 ? (
           <tr>
             <td colSpan={6} className="py-4 text-center text-gray-600">
               No devotees found.
             </td>
           </tr>
         ) : (
-          filteredDevotees.map((devotee) => (
-            <tr key={devotee._id} className="border-b hover:bg-gray-200">
-              <td className="py-2">{devotee.fullName}</td>
-              <td className="py-2">{devotee.phone}</td>
-              <td className="py-2">{devotee.address}</td>
-              <td className="py-2">{devotee.occupation}</td>
-
-              <td className="py-2">{devotee.gender}</td>
+          data.map((row, i) => (
+            <tr key={i} className="border-b hover:bg-gray-200">
+              {columns.map((col) => (
+                <td className="py-2">
+                  {col.type === "date"
+                    ? getFormattedDate(row[col.key])
+                    : row[col.key]}
+                </td>
+              ))}
               <td className="py-2">
-                <p>{new Date(devotee.registrationDate).toLocaleDateString()}</p>
-              </td>
-              <td className="py-2">
-                <button
-                  onClick={() => handleView(devotee)}
-                  className={`pr-2 text-yellow-500 hover:underline`}
-                >
-                  View
-                </button>
-                <button
-                  onClick={() => handleDelete(devotee._id)}
-                  disabled={deleteLoadingId === devotee._id || listLoading}
-                  className={`px-4 text-red-500 hover:underline ${
-                    deleteLoadingId === devotee._id || listLoading
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }`}
-                >
-                  {deleteLoadingId === devotee._id ? "Deleting..." : "Delete"}
-                </button>
-                <button
-                  onClick={() => handleEdit(devotee)}
-                  disabled={listLoading || editLoading}
-                  className={`pl-2 text-blue-500 hover:underline ${
-                    listLoading || editLoading
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }`}
-                >
-                  Edit
-                </button>
+                {actions?.map((action) => (
+                  <Button
+                    variant="underlined"
+                    color={action.color}
+                    loading={action.loading}
+                    onClick={() => action.onClick(row._id)}
+                  >
+                    {action.label}
+                  </Button>
+                ))}
               </td>
             </tr>
           ))

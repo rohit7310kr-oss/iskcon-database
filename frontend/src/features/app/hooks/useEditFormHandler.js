@@ -13,6 +13,7 @@ const useEditFormHandler = (
   setToast,
   handleHideModal,
   handleShowModal,
+  devotees,
   reFetch,
 ) => {
   const [editLoading, setEditLoading] = useState(false);
@@ -28,7 +29,9 @@ const useEditFormHandler = (
 
   const [editErrors, setEditErrors] = useState({});
 
-  const handleEdit = (devotee) => {
+  const handleEdit = (id) => {
+    const devotee = devotees.find((el) => el._id === id);
+
     handleShowModal("edit", devotee);
     setEditForm({
       fullName: devotee.fullName,

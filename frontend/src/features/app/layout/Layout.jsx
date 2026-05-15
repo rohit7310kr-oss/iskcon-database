@@ -29,7 +29,7 @@ const Layout = () => {
             Dashboard
           </Link>
           <Link
-            to="addNewDevotee"
+            to="courses"
             className="block px-4 py-2 rounded-lg hover:bg-orange-100 text-gray-700"
           >
             Courses

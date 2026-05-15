@@ -2,6 +2,7 @@ import React from "react";
 import InputGroup from "../shared/InputGroup";
 import Toast from "../shared/Toast";
 import useAddFormHandler from "../hooks/useAddFormHandler";
+import Button from "../shared/Button";
 
 const AddNewDevotee = () => {
   const {
@@ -82,15 +83,7 @@ const AddNewDevotee = () => {
               // disabled={true}
             />
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className={`block border my-5 p-3 w-50 rounded text-white ${
-              loading ? "bg-gray-400" : "bg-green-400 hover:bg-green-500"
-            }`}
-          >
-            {loading ? "Adding..." : "Add devotee"}
-          </button>
+          <Button loading={loading}>Add Devotee</Button>
         </form>
         <div className="flex gap-3">
           <input

@@ -2,7 +2,11 @@ import React from "react";
 import ModalLayout from "../shared/ModalLayout";
 import Button from "../shared/Button";
 
-const ViewDevoteeModal = ({ selectedDevotee, handleHideModal }) => {
+const ViewDevoteeModal = ({
+  selectedDevotee,
+  handleHideModal,
+  handleShowModal,
+}) => {
   const data = [
     { label: "Full Name", value: selectedDevotee.fullName },
     { label: "Email", value: selectedDevotee.user },
@@ -108,6 +112,9 @@ const ViewDevoteeModal = ({ selectedDevotee, handleHideModal }) => {
         </div>
         <Button variant="secondary" onClick={handleHideModal}>
           Cancle
+        </Button>
+        <Button onClick={() => handleShowModal("edit", selectedDevotee)}>
+          Go to edit
         </Button>
       </div>
     </ModalLayout>

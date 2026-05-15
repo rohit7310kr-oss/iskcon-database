@@ -8,6 +8,7 @@ import ViewDevotee from "../features/app/viewDevotee/ViewDevotee";
 import Login from "../features/auth/login/Login";
 import Register from "../features/auth/register/Register";
 import UserProvider from "../features/context/userContext";
+import Courses from "./../features/app/courses/Courses";
 
 const AppRoutes = () => {
   const router = createBrowserRouter([
@@ -28,6 +29,8 @@ const AppRoutes = () => {
           children: [
             { index: true, element: <Dashboard /> },
             { path: "addNewDevotee", element: <AddNewDevotee /> },
+            { path: "courses", element: <Courses /> },
+
             { path: "devotees", element: <ViewDevotee /> },
             // { path: "connectedDevotee", element: <ConnectedDevotee /> },
           ],

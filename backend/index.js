@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const devoteeRoutes = require("./routes/devotee.routes");
 const userRoutes = require("./routes/user.routes");
+const courseRoutes = require("./routes/course.routes");
 
 const errorHandler = require("./middleware/errorHandler");
 
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/devotees", devoteeRoutes);
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/course", courseRoutes);
 
 app.use(errorHandler);
 

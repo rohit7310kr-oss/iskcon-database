@@ -5,26 +5,34 @@ const Button = ({
   variant = "primary",
   loading = false,
   children,
+  className,
+  color = null,
+  type = "button",
 }) => {
-  let className;
+  let variantClass;
 
   if (variant === "primary")
-    className = `px-4 py-2 rounded text-white ${
+    variantClass = `px-4 py-2 rounded text-white ${
       loading
         ? "bg-gray-400 cursor-not-allowed"
         : "bg-blue-500 hover:bg-blue-600"
     }`;
 
   if (variant === "secondary")
-    className = "px-4 py-2 bg-gray-300 rounded hover:bg-gray-400";
+    variantClass = "px-4 py-2 bg-gray-300 rounded hover:bg-gray-400";
 
   if (variant === "underlined")
-    className = `px-4 text-red-500 hover:underline ${
+    variantClass = `pr-3 text-${color}-500 hover:underline ${
       loading ? "opacity-50 cursor-not-allowed" : ""
     }`;
 
   return (
-    <button onClick={onClick} disabled={loading} className={className}>
+    <button
+      className={`${variantClass} ${className}`}
+      onClick={onClick}
+      disabled={loading}
+      type={type}
+    >
       {loading ? `${children}..` : children}
     </button>
   );

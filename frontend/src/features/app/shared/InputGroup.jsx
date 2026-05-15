@@ -11,7 +11,7 @@ const InputGroup = ({
   disabled = false,
 }) => {
   {
-    if (type === "text" || type === "date")
+    if (type === "text" || type === "date" || type === "number")
       return (
         <div className="m-1 w-full">
           <label className="block py-1" htmlFor={name}>
