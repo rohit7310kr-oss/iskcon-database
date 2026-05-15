@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { updateDevotee } from "../service/devotees";
 import InputGroup from "../shared/InputGroup";
@@ -15,6 +15,8 @@ import {
 } from "../../../constants/formConfig";
 import ModalLayout from "../shared/ModalLayout";
 import Button from "../shared/Button";
+import { getAllCourseAPI } from "../service/courses";
+import Courses from "../courses/Courses";
 
 const EditDevotee = function ({
   handleHideModal,
@@ -27,6 +29,22 @@ const EditDevotee = function ({
   editLoading,
 }) {
   const [editErrors, setEditErrors] = useState({});
+  const [courses, setCourses] = useState([]);
+  const [loadingCourse, setLoadingCourse] = useState(false);
+
+  useEffect(() => {
+    const fetchCourses = async function () {
+      try {
+        setLoadingCourse(true);
+        const cour = await getAllCourseAPI();
+        if (cour.data.status === "success") setCourses(cour.data.data);
+      } catch (err) {
+      } finally {
+        setLoadingCourse(false);
+      }
+    };
+    fetchCourses();
+  }, []);
 
   const validateEditForm = () => {
     const errors = {};
@@ -67,6 +85,7 @@ const EditDevotee = function ({
         company: editForm.company,
         designation: editForm.designation,
         guruName: editForm.guruName,
+        course: editForm.course.value,
       };
 
       await updateDevotee(selectedDevotee._id, editData);
@@ -174,6 +193,20 @@ const EditDevotee = function ({
         name="occupation"
         setValue={setEditForm}
         value={[editForm.occupation]}
+      />
+
+      <MyTagInput
+        mode="select"
+        whitelist={courses.map((el) => {
+          return {
+            label: `${el.name} - ${el.department}`,
+            value: el._id,
+          };
+        })}
+        label="Courses"
+        name="course"
+        setValue={setEditForm}
+        value={[editForm.course]}
       />
 
       <MyTagInput

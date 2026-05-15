@@ -14,6 +14,7 @@ exports.getAllCourse = catchAsyncHandler(async function (req, res) {
 
   res.status(200).json({
     count: courses.length,
+    status: "success",
     data: courses,
     message: `${courses.length} courses fetched`,
   });

@@ -3,6 +3,7 @@ const { normalizedString, trimmedString } = require("../utils/schemaFields");
 
 const devoteeSchema = new mongoose.Schema({
   // Phase-1
+  course: { type: mongoose.Schema.Types.ObjectId, ref: "course" },
   fullName: { ...trimmedString, required: true },
   phone: { type: Number, required: true },
   address: normalizedString,

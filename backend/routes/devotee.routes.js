@@ -20,7 +20,7 @@ router.use(authMiddleware);
 router
   .route("/:id")
   .get(getDevoteeById)
-  .put(allowRoles("volunteer", "admin"), updateDevotee)
+  .put(allowRoles("volunteer", "admin"), updateDevotee)s
   .delete(allowRoles("admin"), deleteDevotee);
 
 router.use(allowRoles("volunteer", "admin"));
