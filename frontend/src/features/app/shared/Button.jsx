@@ -11,6 +11,11 @@ const Button = ({
 }) => {
   let variantClass;
 
+  if (variant === "danger")
+    variantClass = `px-4 py-2 rounded text-white ${
+      loading ? "bg-red-400 cursor-not-allowed" : "bg-red-500 hover:bg-blue-600"
+    }`;
+
   if (variant === "primary")
     variantClass = `px-4 py-2 rounded text-white ${
       loading

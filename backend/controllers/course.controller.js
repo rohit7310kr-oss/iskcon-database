@@ -25,3 +25,10 @@ exports.updateCourse = catchAsyncHandler(async function (req, res) {
 
   res.status(200).json({ status: "success", data: course });
 });
+
+exports.deleteCourse = catchAsyncHandler(async function (req, res) {
+  // Delete confirmation should also exist here!!!
+  const course = await Course.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({ status: "success" });
+});

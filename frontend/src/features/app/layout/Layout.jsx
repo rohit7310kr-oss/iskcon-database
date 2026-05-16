@@ -60,6 +60,13 @@ const Layout = () => {
           </Link>
         </nav>
         <div className="p-4 border-t">
+          <div className="flex items-center justify-center space-x-4 w-full mb-4">
+            <div className="bg-gray-300 rounded px-3 py-2 w-full">
+              <p>{user?.email}</p>
+              <p>{user?.phone}</p>
+              <p>{user?.role}</p>
+            </div>
+          </div>
           <button
             onClick={logoutHandler}
             className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
@@ -74,18 +81,6 @@ const Layout = () => {
         {/* Top nav bar starts */}
         <div className="bg-white shadow px-6 flex justify-between items-centre py-3 ">
           <h1 className="text-lg font-semibold"> Durg Database</h1>
-
-          <div className="flex items-center space-x-4">
-            <input
-              className="border rounder-lg px-1 py-1 focus:outline-none focus:ring-orange-400"
-              placeholder="search..."
-            ></input>
-            <div className="bg-gray-300 rounded px-3 py-2">
-              <p>{user?.email}</p>
-              <p>{user?.phone}</p>
-              <p>{user?.role}</p>
-            </div>
-          </div>
         </div>
         {/* Top nav bar ends */}
         <div className="p-6 space-y-6 overflow-y-auto">

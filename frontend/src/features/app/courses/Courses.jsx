@@ -3,6 +3,7 @@ import InputGroup from "../shared/InputGroup";
 import Button from "../shared/Button";
 import {
   createCourseAPI,
+  deleteCourseAPI,
   getAllCourseAPI,
   updateCourseAPI,
 } from "../service/courses";
@@ -13,6 +14,7 @@ import {
   getTimeStamp,
   getTodayDate,
 } from "../../utils/dateUtils";
+import ModalLayout from "../shared/ModalLayout";
 
 const Courses = () => {
   const todayDate = getTodayDate();
@@ -28,6 +30,13 @@ const Courses = () => {
     expectedEndDate: "",
   };
 
+  const [courseDeleteModal, setCourseDeleteModal] = useState({
+    open: false,
+    course: null,
+  });
+
+  const [courseDeleteInputError, setCourseDeleteInputError] = useState();
+  const [courseDeleteInput, setCourseDeleteInput] = useState();
   const [courses, setCourses] = useState();
   const [formData, setFormData] = useState(initForm);
   const [formError, setFormError] = useState({});
@@ -141,6 +150,33 @@ const Courses = () => {
     setFormMode("create");
   };
 
+  const handleDelete = async function () {
+    const error = { inputError: "" };
+
+    if (courseDeleteInput !== `DELETE COURSES/${courseDeleteModal.course.name}`)
+      error.inputError = "Write proper to delete this course";
+
+    setCourseDeleteInputError(error.inputError);
+
+    if (error.inputError) return;
+
+    try {
+      setLoading({ status: true });
+      const res = await deleteCourseAPI(courseDeleteModal.course._id);
+      console.log(res);
+      if (res.data.status === "success") {
+        setCourseDeleteModal({ open: false, course: null });
+        setCourseDeleteInput("");
+        setCourseDeleteInputError("");
+        setToast({ type: "success", message: "Course delete successfull" });
+        reFetch();
+      }
+    } catch (err) {
+    } finally {
+      setLoading({ status: false });
+    }
+  };
+
   const handleEditCourse = async function (e) {
     e.preventDefault();
 
@@ -163,6 +199,11 @@ const Courses = () => {
     { label: "Start date", key: "startDate", type: "date" },
     { label: "Expected Finish date", key: "expectedEndDate", type: "date" },
   ];
+
+  const handleDeleteButton = function (id) {
+    const course = courses.find((el) => el._id === id);
+    setCourseDeleteModal({ open: true, course });
+  };
 
   return (
     <>
@@ -233,10 +274,39 @@ const Courses = () => {
           data={courses}
           listLoading={loading.status}
           actions={[
-            { label: "edit", color: "blue", onClick: handleEditButton },
+            { label: "Edit", color: "blue", onClick: handleEditButton },
+            { label: "Delete", color: "red", onClick: handleDeleteButton },
           ]}
         />
       </div>
+      {courseDeleteModal.open && (
+        <ModalLayout>
+          <InputGroup
+            value={courseDeleteInput}
+            onChange={(e) => setCourseDeleteInput(e.target.value)}
+            name="deleteInput"
+            label={`Please write: DELETE COURSES/${courseDeleteModal.course.name}`}
+            error={courseDeleteInputError}
+          />
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setCourseDeleteInput("");
+              setCourseDeleteInputError("");
+              setCourseDeleteModal({ open: false });
+            }}
+          >
+            cancle
+          </Button>
+          <Button
+            loading={loading.status}
+            variant="danger"
+            onClick={handleDelete}
+          >
+            Delete
+          </Button>
+        </ModalLayout>
+      )}
     </>
   );
 };
